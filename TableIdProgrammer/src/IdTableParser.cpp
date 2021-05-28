@@ -20,13 +20,13 @@
  * Converts the lines of the read file into the command-string.
  */
 
-IdTableParser::IdTableParser(vector<string> fileContent) {
+IdTableParser::IdTableParser(po::variables_map varMap, vector<string> fileContent) {
 	for (string line : fileContent) {
 		//ID_Table::Theta_sens_type actItem;
 		stringstream actItem;
 
 		vector<string> splitted = splitLine(line);
-		actItem << "setSensId ";
+		actItem << varMap["setSensorIdCmd"].as<string>() << " ";
 		actItem << to_string(calcHash(splitted)) << ", ";
 		actItem << splitted.at(POS_MIN) << ", ";
 		actItem << splitted.at(POS_MAX) << ", ";
@@ -34,6 +34,7 @@ IdTableParser::IdTableParser(vector<string> fileContent) {
 		actItem << splitted.at(POS_RELAY) << ", ";
 		boost::trim(splitted.at(POS_SHORTNAME));
 		actItem << splitted.at(POS_SHORTNAME);
+		actItem << "\n";
 
 		// if we want to convert to Theta_sens_type
 		//actItem.sensorIdHash = calcHash(splitted);
@@ -73,7 +74,7 @@ vector<string> IdTableParser::splitLine(string line) {
 void IdTableParser::dumpContent(void) {
 	for (uint i = 0; i < _content.size(); i++) {
 
-		cout << _content.at(i) << "\n";
+		cout << _content.at(i) << std::flush;
 
 		// cout << to_string(_content.at(i).sensorIdHash) << " ";
 		// cout << boost::format("%2.1f") % _content.at(i).minVal << " ";
@@ -83,5 +84,6 @@ void IdTableParser::dumpContent(void) {
 		// cout << string(_content.at(i).shortname, ID_Table::SHORTNAME_LEN + 2)
 		// 		<< "\n";
 	}
+	cout << "\n";
 }
 

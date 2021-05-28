@@ -16,7 +16,8 @@ ostream& operator<<(ostream &os, const vector<T> &v) {
 	return os;
 }
 
-string programVersion = "TableIdProgrammer V0.1\nPart of the ThetaMonitorNetwork project.";
+string programVersion =
+		"TableIdProgrammer V0.1\nPart of the ThetaMonitorNetwork project.";
 
 int ProgramOptions::init(int argc, char *argv[]) {
 	checkIfTest(argc, argv);
@@ -26,6 +27,14 @@ int ProgramOptions::init(int argc, char *argv[]) {
 		string filename;
 		uint32_t stationId;
 		string idTableFileName;
+		string serialDevice;
+		uint baudrate;
+		uint waitstates;
+		string acknowledge;
+		string setSensorId;
+		string readSensorTable;
+		string setStationId;
+		string getStationId;
 
 // @formatter:off
 		// command line only
@@ -47,6 +56,25 @@ int ProgramOptions::init(int argc, char *argv[]) {
 				("setstatid", po::value<uint32_t>(&stationId),
 						"<uint32> write station-ID to device")
 				("getstatid", "read station-ID from device")
+				("device,d", po::value<string>(&serialDevice),
+						"Serial-device, i.E. /dev/ttyUSB0")
+				("baudrate,b",
+						po::value<uint>(&baudrate)->default_value(115200),
+						"Baudrate")
+				("waitstates",
+						po::value<uint>(&waitstates)->default_value(20),
+						"time to wait, after command was sent, in 500ms steps")
+				 ("acknowledge",
+						 po::value<string>(&acknowledge)->default_value("**DONE**"),
+						 "Response string from device")
+				("setSensorIdCmd", po::value<string>(&setSensorId),
+						"Device's command to set sensor-values")
+				("readSensorTableCmd", po::value<string>(&readSensorTable),
+						"Device's command to read the sensor-id table")
+				("setStationIdCmd", po::value<string>(&setStationId),
+						"Device's command to write the station-id to E2")
+				("getStationIdCmd", po::value<string>(&getStationId),
+						"Device's command to get the device's current station-id")
 				("test", "execute tests");
 
 		// Hidden options, command line and config file

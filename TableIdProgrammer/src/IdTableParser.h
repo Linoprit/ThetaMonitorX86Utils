@@ -8,6 +8,7 @@
 #ifndef IDTABLEPARSER_H_
 #define IDTABLEPARSER_H_
 
+#include <Framework/ProgramOptions.h>
 #include <string>
 #include <vector>
 
@@ -16,7 +17,7 @@ using namespace std;
 class IdTableParser {
 public:
 
-	IdTableParser(vector<string> fileContent);
+	IdTableParser(po::variables_map varMap, vector<string> fileContent);
 	virtual ~IdTableParser() {
 	}
 	;
